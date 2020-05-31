@@ -8,7 +8,7 @@ In this tutorial, we'll go over creating a new API endpoint in the GraphQL frame
 
 This is where all of the GraphQL objects (types, queries, mutations) are initially defined. Follow the GraphQL conventions (linked below) to ensure that your object types and properties are correct. A user defined type is a type with properties that are defined by the user. This is an example of creating a user defined type:
 
-``` TypeScript
+```typescript
 type _Plugin__EventCheckIn  @entity {
     id: ID! @id @column
     user: String! @column
@@ -20,7 +20,7 @@ There are 3 properties for this type, which are int, user, and timestamp. These 
 
 The next type of schema you may define is a query. This looks like:
 
-``` TypeScript
+```typescript
 _Plugin__eventCheckIn(id: ID!): _Plugin__EventCheckIn! 
 _Plugin__eventCheckIns(sortDirection: SortDirection): [_Plugin__EventCheckIn!]!
 ```
@@ -29,7 +29,7 @@ A query takes input and queries the internal MongoDB collection using the input 
 
 Another commonly used schema is an input. An input defines the parameters and types of a user input for your API. An input looks like:
 
-``` TypeScript
+```typescript
 input _Plugin__EventCheckInInput {
     user: ID!
     event: ID!
@@ -38,7 +38,7 @@ input _Plugin__EventCheckInInput {
 
 This input takes two parameters, both of which are type ID. These inputs are used for the Mutations. A Mutation takes an input and performs an action using the parameters. An example of this is:
 
-``` TypeScript
+```typescript
 extend type Mutation {
     _Plugin__checkInUserToEvent(input: _Plugin__EventCheckInInput!): User!
 }
@@ -54,7 +54,7 @@ To learn more about what some of these types and annotations mean, https://graph
 
 This dictates what the users see when they visit the vaken website. To integrate a new component (React page), follow this example:
 
-``` TypeScript
+```typescript
 export class NFCPlugin {
   get routeInfo() {
     return {
@@ -81,7 +81,7 @@ This file is where you put all of the GraphQL resolvers for your plugin. A resol
 
 The first type of resolver is related to the GraphQL schema for the user-defined types. You can think of these as getters.
 
-``` TypeScript
+```typescript
 _Plugin__EventCheckIn: {
         id: async eventCheckIn => (await eventCheckIn)._id.toHexString(),
         timestamp: async eventCheckIn => (await eventCheckIn).timestamp.getTime(),
@@ -93,7 +93,7 @@ For example, this resolver fetches the attributes associated with the object. Th
 
 The next type of resolver is a query. Queries query the database, in this case MongoDB, using the parameters passed to the GraphQL query. This is similar to a GET request in REST.
 
-``` TypeScript
+```typescript
 _Plugin__eventCheckIns: async (root, args, ctx) => {
           checkIsAuthorizedArray([UserType.Organizer], ctx.user);
           return ctx.db.collection<_Plugin__EventCheckInDbObject>('_Plugin__eventCheckIns').find().toArray();
@@ -104,7 +104,7 @@ In this function, the first thing we do is authenticate that the user has the co
 
 The final relevant type of resolver is a Mutation. A Mutation is a way to modify the data contained in the databases. This is similar to a POST request in GET.
 
-``` TypeScript
+```typescript
 Mutation: {
         _Plugin__checkInUserToEvent: async (root, { input }, { models, user }) => {
           checkIsAuthorizedArray([UserType.Organizer, UserType.Volunteer, UserType.Sponsor], user);
@@ -128,3 +128,14 @@ mutation {
      }
 }
 ```
+
+An example query we might run is:
+```
+query {
+  _Plugin__eventCheckIns {
+    user
+  }
+}
+```
+
+This makes a call to the query we defined before that returns all of the users in the collection associated with the eventCheckIn type.
