@@ -54,7 +54,7 @@ module.exports = {
 			{
 				type: 'category',
 				label: 'Development',
-				items: ['plugins/dev/overview'],
+				items: ['plugins/dev/overview', 'plugins/dev/setup'],
 			},
 		],
 		'The Documentation': [
