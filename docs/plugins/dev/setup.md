@@ -1,3 +1,8 @@
+---
+id: plugin-setup
+title: Plugin Setup
+sidebar_label: Plugin Setup
+---
 #Setup
 
 This guide will walk you through getting your plugin working with Vaken's tooling.
