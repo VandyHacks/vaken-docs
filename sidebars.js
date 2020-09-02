@@ -61,10 +61,10 @@ module.exports = {
 				items: ["plugins/existing/nfc", "plugins/existing/oauth"],
 			},
 			{
-				type: "category",
-				label: "Development",
-				items: ["plugins/dev/overview"],
-			},
+				type: 'category',
+				label: 'Development',
+				items: ['plugins/dev/overview', 'plugins/dev/setup'],
+      },
 		],
 		"The Documentation": [
 			"documentation/docusaurus",
